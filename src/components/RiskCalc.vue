@@ -274,12 +274,12 @@ const formattedSolvedValue = (field) => {
     </div>
 
     <div class="mb-5 grid gap-3 sm:grid-cols-2">
-      <div class="rounded-md border border-emerald-200 bg-emerald-50 p-5 dark:border-emerald-500/20 dark:bg-emerald-500/10">
+      <div class="rounded-md border border-rose-200 bg-rose-50 p-5 dark:border-rose-500/20 dark:bg-rose-500/10">
         <div class="mb-4 flex items-center justify-between">
-          <div class="rounded-sm bg-white p-2 text-emerald-500 dark:bg-zinc-900 dark:text-emerald-300">
+          <div class="rounded-sm bg-white p-2 text-rose-500 dark:bg-zinc-900 dark:text-rose-300">
             <ShieldAlert class="h-5 w-5" />
           </div>
-          <span class="text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-500 dark:text-emerald-300">Risk</span>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.22em] text-rose-500 dark:text-rose-300">Risk</span>
         </div>
         <div class="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
           {{ formatCurrency(effectiveRisk) }}
