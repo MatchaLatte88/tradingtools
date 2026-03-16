@@ -23,7 +23,7 @@ let sessionTimer;
 const now = ref(new Date());
 
 const sessionDefinitions = [
-  { name: 'NY PM', startHour: 16, startMinute: 0, endHour: 22, endMinute: 0 },
+  { name: 'NY PM', startHour: 19, startMinute: 0, endHour: 22, endMinute: 0 },
   { name: 'NY AM', startHour: 13, startMinute: 30, endHour: 16, endMinute: 0 },
   { name: 'London Session', startHour: 8, startMinute: 0, endHour: 12, endMinute: 0 },
   { name: 'Asian Session', startHour: 0, startMinute: 0, endHour: 9, endMinute: 0 },
