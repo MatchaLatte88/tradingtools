@@ -52,7 +52,8 @@ const sessionState = computed(() => {
     return current >= start && current < end;
   }) ?? null;
 
-  const candidateTransitions = [];
+  const candidateStarts = [];
+  const candidateEnds = [];
 
   for (let dayOffset = 0; dayOffset <= 1; dayOffset += 1) {
     const baseDate = new Date(current);
@@ -63,16 +64,14 @@ const sessionState = computed(() => {
       const end = setTime(baseDate, session.endHour, session.endMinute);
 
       if (start > current) {
-        candidateTransitions.push({
-          type: 'start',
+        candidateStarts.push({
           label: session.name,
           date: start,
         });
       }
 
       if (end > current) {
-        candidateTransitions.push({
-          type: 'end',
+        candidateEnds.push({
           label: session.name,
           date: end,
         });
@@ -80,19 +79,24 @@ const sessionState = computed(() => {
     });
   }
 
-  candidateTransitions.sort((a, b) => a.date.getTime() - b.date.getTime());
-  const nextTransition = candidateTransitions[0] ?? null;
+  candidateStarts.sort((a, b) => a.date.getTime() - b.date.getTime());
+  candidateEnds.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+  const nextSessionStart = candidateStarts[0] ?? null;
+  const currentSessionEnd = activeSession ? candidateEnds.find((item) => item.label === activeSession.name) ?? null : null;
+  const countdownTarget = activeSession ? nextSessionStart : nextSessionStart;
 
   return {
     activeLabel: activeSession?.name ?? 'Off Session',
     isActive: Boolean(activeSession),
-    nextLabel: nextTransition?.label ?? 'No upcoming session',
-    nextType: nextTransition?.type ?? 'start',
-    countdown: nextTransition ? formatCountdown(nextTransition.date) : '00:00:00',
+    nextLabel: nextSessionStart?.label ?? 'No upcoming session',
+    countdown: countdownTarget ? formatCountdown(countdownTarget.date) : '00:00:00',
+    endCountdown: currentSessionEnd ? formatCountdown(currentSessionEnd.date) : null,
     clock: current.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
+      hour12: false,
     }),
   };
 });
@@ -240,6 +244,12 @@ const cards = [
                 </div>
                 <p class="truncate pt-1 text-xs font-medium leading-none text-zinc-500 dark:text-zinc-400">
                   Next: {{ sessionState.nextLabel }} in {{ sessionState.countdown }}
+                </p>
+                <p
+                  v-if="sessionState.isActive && sessionState.endCountdown"
+                  class="truncate pt-1 text-[11px] font-medium leading-none text-zinc-400 dark:text-zinc-500"
+                >
+                  Ends in {{ sessionState.endCountdown }}
                 </p>
               </div>
             </div>
